@@ -1,0 +1,57 @@
+Linux kernel
+============
+
+There are several guides for kernel developers and users. These guides can
+be rendered in a number of formats, like HTML and PDF. Please read
+Documentation/admin-guide/README.rst first.
+
+In order to build the documentation, use ``make htmldocs`` or
+``make pdfdocs``.  The formatted documentation can also be read online at:
+
+    https://www.kernel.org/doc/html/latest/
+
+There are various text files in the Documentation/ subdirectory,
+several of them using the Restructured Text markup notation.
+See Documentation/00-INDEX for a list of what is contained in each file.
+
+Please read the Documentation/process/changes.rst file, as it contains the
+requirements for building and running the kernel, and information about
+the problems which may result by upgrading your kernel.
+
+Method of application:
+
+cd linux-cedrus
+
+sudo -i
+
+make CROSS_COMPILE=aar ACRH=arm64 menuconfig
+
+
+make CROSS_COMPILE=aar ACRH=arm64 -j8
+
+
+
+make-kpkg --initrd --revision 20180810 --append-to-servion -sunxiarm64  kernel_image
+
+dpkg -i linux-image-4.18.0-rc4-sunxiarm64_20180810_arm64.deb
+
+This command can see only the kernel installed using the KPKG command:
+
+	dpkg --get-selections | grep linux
+
+Delete the old kernel boot entries:
+	apt-get remove linux-headers-xx   linux-image-xx
+
+cd /boot/
+
+rm -r "old linux image and old vmlinuz-XXX"
+	rm -r Image
+	rm -r vmlinuz-XXX
+
+new kernel image:
+
+	chmod 755 vmlinuz-4.18.0-rc4-sunxiarm64
+	ln -s vmlinuz-4.18.0-rc4-sunxiarm64 Image
+	
+reboot
+
